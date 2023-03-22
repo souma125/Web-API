@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from main.serializers import CreateCustomerAddressSerializer, CreateCarSerializer
 from django.db import connections
+from datetime import datetime
 import re
 # Create your views here.
 
@@ -27,6 +28,14 @@ class CustomeRegisterView(APIView):
         date_of_birth = request.data.get('date_of_birth')
         phone = request.data.get('phone')
         email = request.data.get('email')
+        format = "%Y-%d-%m"
+        res = True
+        try:
+            res = bool(datetime.strptime(request.data.get('date_of_birth'), format))
+        except ValueError:
+            res = False
+        if res == False:
+            return Response({'error': 'Oops, Date Format is invalid.Date format should be like this(2021-01-03)'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         try:
             if first_name == '':
                 return Response({'error': 'First name cannot be empty'}, status=status.HTTP_406_NOT_ACCEPTABLE)
