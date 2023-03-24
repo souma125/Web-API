@@ -4,7 +4,6 @@ from rest_framework import status
 from rest_framework.views import APIView
 from main.serializers import CreateCustomerAddressSerializer, CreateCarSerializer
 from django.db import connections
-from datetime import datetime
 import re
 # Create your views here.
 
@@ -28,19 +27,7 @@ class CustomeRegisterView(APIView):
         date_of_birth = request.data.get('date_of_birth')
         phone = request.data.get('phone')
         email = request.data.get('email')
-        format = "%Y-%d-%m"
-        res = True
-        try:
-            res = bool(datetime.strptime(
-                request.data.get('date_of_birth'), format))
-        except (ValueError,TypeError):
-            res = False
-        if res == False:
-            return Response({'error': 'Oops, Date Format is invalid.Date format should be like this(2021-01-03)'}, status=status.HTTP_406_NOT_ACCEPTABLE)
-        if len(phone) < 10:
-            return Response({'error': 'Phone number must be greater then 10 digit'}, status=status.HTTP_406_NOT_ACCEPTABLE)
-        if not phone.isdigit():
-            return Response({'error': 'Phone number is not valid'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        
         try:
             if first_name == '':
                 return Response({'error': 'First name cannot be empty'}, status=status.HTTP_406_NOT_ACCEPTABLE)
@@ -58,7 +45,6 @@ class CustomeRegisterView(APIView):
                 return Response({'error': 'Please enter a valid email '}, status=status.HTTP_406_NOT_ACCEPTABLE)
         except TypeError:
             print("Exception occurred: All the fields are mandotory")
-        
         serilaizer = CreateCustomerAddressSerializer(data=request.data)
         if serilaizer.is_valid(raise_exception=True):
             cursor = connections['default'].cursor()
@@ -81,7 +67,7 @@ class cars(APIView):
     def post(self, request, format=None):
         serilaizer = CreateCarSerializer(data=request.data)
         if serilaizer.is_valid(raise_exception=True):
-            return Response({'msg': 'Car added Success'}, status=status.HTTP_200_OK)
+            return Response(serilaizer.data, status=status.HTTP_200_OK)
         return Response(serilaizer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

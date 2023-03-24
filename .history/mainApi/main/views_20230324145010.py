@@ -28,19 +28,6 @@ class CustomeRegisterView(APIView):
         date_of_birth = request.data.get('date_of_birth')
         phone = request.data.get('phone')
         email = request.data.get('email')
-        format = "%Y-%d-%m"
-        res = True
-        try:
-            res = bool(datetime.strptime(
-                request.data.get('date_of_birth'), format))
-        except (ValueError,TypeError):
-            res = False
-        if res == False:
-            return Response({'error': 'Oops, Date Format is invalid.Date format should be like this(2021-01-03)'}, status=status.HTTP_406_NOT_ACCEPTABLE)
-        if len(phone) < 10:
-            return Response({'error': 'Phone number must be greater then 10 digit'}, status=status.HTTP_406_NOT_ACCEPTABLE)
-        if not phone.isdigit():
-            return Response({'error': 'Phone number is not valid'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         try:
             if first_name == '':
                 return Response({'error': 'First name cannot be empty'}, status=status.HTTP_406_NOT_ACCEPTABLE)
@@ -58,7 +45,19 @@ class CustomeRegisterView(APIView):
                 return Response({'error': 'Please enter a valid email '}, status=status.HTTP_406_NOT_ACCEPTABLE)
         except TypeError:
             print("Exception occurred: All the fields are mandotory")
-        
+        format = "%Y-%d-%m"
+        res = True
+        try:
+            res = bool(datetime.strptime(
+                request.data.get('date_of_birth'), format))
+        except ValueError:
+            res = False
+        if res == False:
+            return Response({'error': 'Oops, Date Format is invalid.Date format should be like this(2021-01-03)'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        if len(phone) < 10:
+            return Response({'error': 'Phone number must be greater then 10 digit'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        if not phone.isdigit():
+            return Response({'error': 'Phone number is not valid'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         serilaizer = CreateCustomerAddressSerializer(data=request.data)
         if serilaizer.is_valid(raise_exception=True):
             cursor = connections['default'].cursor()

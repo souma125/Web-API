@@ -33,7 +33,7 @@ class CustomeRegisterView(APIView):
         try:
             res = bool(datetime.strptime(
                 request.data.get('date_of_birth'), format))
-        except (ValueError,TypeError):
+        except ValueError:
             res = False
         if res == False:
             return Response({'error': 'Oops, Date Format is invalid.Date format should be like this(2021-01-03)'}, status=status.HTTP_406_NOT_ACCEPTABLE)

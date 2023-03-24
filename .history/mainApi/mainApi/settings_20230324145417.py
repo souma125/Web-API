@@ -131,43 +131,22 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8888",
-    "http://127.0.0.1:8888",
+    "http://localhost:7777",
+    "http://127.0.0.1:7777",
 ]
 
 
-# REST_FRAMEWORK = {
-#     # Use Django's standard `django.contrib.auth` permissions,
-#     # or allow read-only access for unauthenticated users.
-#     # 'DEFAULT_PERMISSION_CLASSES': [
-#     #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-#     # ],
-#     'DEFAULT_RENDERER_CLASSES': (
-#         'rest_framework.renderers.JSONRenderer',
-#     )
-# }
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    # ],
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
+}
 
 # http://127.0.0.1:8888/api/customer/car/
 # http://127.0.0.1:8888/api/customer/
 # http://127.0.0.1:8888/api/customer/register/
-
-# {
-# "first_name":"test",
-# "last_name":"testLastName",
-# "age":30,
-# "date_of_birth":"2021-01-03",
-# "phone":"845122432342",
-# "email":"test@gmail.com",
-# "street_name":"ABC",
-# "pincode":45123,
-# "city":"kol",
-# "state":"WB",
-# "country_code":"IN"
-# } 
-
-
-# {
-# "model_name":"modelA",
-# "manufacturer":"manufacturerA",
-# "color":"colorA"
-# }
